@@ -1,272 +1,555 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Computer Info</title>
+  <title>Computer Info — Everything You Need to Know</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg: #080c14;
+      --surface: #0f1623;
+      --surface2: #161d2e;
+      --border: #1e2d45;
+      --accent: #3b82f6;
+      --accent2: #8b5cf6;
+      --accent3: #06b6d4;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --green: #10b981;
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      background: #0f1117;
-      color: #e2e8f0;
-      min-height: 100vh;
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(8,12,20,0.85); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between;
     }
-    header {
-      background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
-      border-bottom: 1px solid #2d3748;
-      padding: 3rem 2rem;
-      text-align: center;
+    .nav-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.2rem;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--text); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 6rem 2rem 4rem;
+      position: relative; overflow: hidden;
     }
-    header h1 {
-      font-size: 3rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, #60a5fa, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1600&q=80');
+      background-size: cover; background-position: center;
+      filter: brightness(0.15) saturate(1.5);
     }
-    header p {
-      color: #94a3b8;
-      font-size: 1.1rem;
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at center, rgba(59,130,246,0.15) 0%, transparent 70%),
+                  linear-gradient(to bottom, transparent 60%, var(--bg) 100%);
     }
-    main {
-      max-width: 1100px;
-      margin: 3rem auto;
-      padding: 0 1.5rem;
+    .hero-content { position: relative; z-index: 1; max-width: 800px; }
+    .hero-badge {
+      display: inline-block; background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3);
+      color: #60a5fa; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.4rem 1rem; border-radius: 999px; margin-bottom: 1.5rem;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 800;
+      line-height: 1.1; margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #fff 30%, #60a5fa 70%, #a78bfa 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
     }
-    .card {
-      background: #1a1f2e;
-      border: 1px solid #2d3748;
-      border-radius: 12px;
-      padding: 1.75rem;
-      transition: transform 0.2s, border-color 0.2s;
+    .hero p { font-size: 1.2rem; color: #94a3b8; max-width: 600px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .hero-stats { display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    .stat { text-align: center; }
+    .stat-num { font-size: 2rem; font-weight: 800; color: #60a5fa; font-family: 'Space Grotesk', sans-serif; }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .scroll-hint { position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%); color: var(--muted); font-size: 0.85rem; animation: bounce 2s infinite; }
+    @keyframes bounce { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(-8px)} }
+
+    /* SECTIONS */
+    section { padding: 5rem 2rem; max-width: 1200px; margin: 0 auto; }
+    .section-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: #60a5fa; margin-bottom: 0.75rem; }
+    .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; color: var(--text); margin-bottom: 1rem; }
+    .section-sub { color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 600px; margin-bottom: 3rem; }
+
+    /* COMPONENT CARDS WITH IMAGES */
+    .components-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.5rem; }
+    .comp-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
     }
-    .card:hover {
-      transform: translateY(-4px);
-      border-color: #60a5fa;
+    .comp-card:hover { transform: translateY(-6px); border-color: #3b82f6; box-shadow: 0 20px 60px rgba(59,130,246,0.15); }
+    .comp-img { width: 100%; height: 200px; object-fit: cover; display: block; filter: brightness(0.85) saturate(1.2); transition: filter 0.3s; }
+    .comp-card:hover .comp-img { filter: brightness(1) saturate(1.4); }
+    .comp-body { padding: 1.5rem; }
+    .comp-tag { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #a78bfa; margin-bottom: 0.5rem; }
+    .comp-body h3 { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .comp-body p { color: #94a3b8; font-size: 0.92rem; line-height: 1.7; margin-bottom: 1rem; }
+    .comp-specs { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .spec-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 999px; padding: 0.25rem 0.75rem; font-size: 0.78rem; color: #94a3b8; }
+
+    /* HOW IT WORKS */
+    .how-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    @media(max-width:768px){ .how-grid { grid-template-columns: 1fr; } }
+    .how-img-wrap { position: relative; border-radius: 20px; overflow: hidden; }
+    .how-img { width: 100%; border-radius: 20px; display: block; }
+    .how-img-glow { position: absolute; inset: -2px; border-radius: 22px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); z-index: -1; }
+    .steps { display: flex; flex-direction: column; gap: 1.5rem; }
+    .step { display: flex; gap: 1.25rem; align-items: flex-start; }
+    .step-num { min-width: 2.5rem; height: 2.5rem; border-radius: 50%; background: linear-gradient(135deg, #3b82f6, #8b5cf6); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem; flex-shrink: 0; }
+    .step-content h4 { font-weight: 700; margin-bottom: 0.35rem; }
+    .step-content p { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+
+    /* TYPES OF COMPUTERS */
+    .types-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+    .type-card {
+      position: relative; border-radius: 16px; overflow: hidden; aspect-ratio: 3/4; cursor: default;
+      transition: transform 0.3s;
     }
-    .card-icon {
-      font-size: 2rem;
-      margin-bottom: 1rem;
+    .type-card:hover { transform: scale(1.03); }
+    .type-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .type-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(8,12,20,0.95) 0%, rgba(8,12,20,0.3) 60%, transparent 100%);
     }
-    .card h2 {
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #60a5fa;
-      margin-bottom: 0.75rem;
+    .type-text { position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem; }
+    .type-text h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .type-text p { font-size: 0.82rem; color: #94a3b8; line-height: 1.5; }
+
+    /* HISTORY TIMELINE */
+    .timeline-wrap { position: relative; padding-left: 2rem; }
+    .timeline-wrap::before { content:''; position: absolute; left: 0; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, #3b82f6, #8b5cf6, transparent); }
+    .t-item { position: relative; margin-bottom: 2.5rem; padding-left: 1.5rem; }
+    .t-dot { position: absolute; left: -2.4rem; top: 0.4rem; width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 2px solid #3b82f6; box-shadow: 0 0 10px rgba(59,130,246,0.6); }
+    .t-year { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #a78bfa; margin-bottom: 0.25rem; }
+    .t-title { font-weight: 700; font-size: 1rem; margin-bottom: 0.35rem; }
+    .t-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.6; }
+    .t-img { width: 100%; max-width: 500px; border-radius: 12px; margin-top: 1rem; filter: brightness(0.8) saturate(1.2); }
+
+    /* BENCHMARKS */
+    .bench-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .bench-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+    .bench-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 1.25rem; color: #60a5fa; }
+    .bar-item { margin-bottom: 1rem; }
+    .bar-label { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .bar-label span { color: var(--text); font-weight: 600; }
+    .bar-bg { height: 8px; background: var(--surface2); border-radius: 999px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 999px; animation: fillBar 1.5s ease forwards; transform-origin: left; }
+    @keyframes fillBar { from { width: 0 } }
+
+    /* FUTURE */
+    .future-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .future-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+      transition: transform 0.3s, border-color 0.3s;
     }
-    .card p {
-      color: #94a3b8;
-      line-height: 1.7;
-      font-size: 0.95rem;
-    }
-    .card ul {
-      list-style: none;
-      margin-top: 0.75rem;
-    }
-    .card ul li {
-      color: #94a3b8;
-      font-size: 0.9rem;
-      padding: 0.3rem 0;
-      border-bottom: 1px solid #2d3748;
-      display: flex;
-      justify-content: space-between;
-    }
-    .card ul li:last-child { border-bottom: none; }
-    .card ul li span { color: #e2e8f0; font-weight: 600; }
-    .timeline {
-      margin-top: 3rem;
-    }
-    .timeline h2 {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: #e2e8f0;
-      margin-bottom: 1.5rem;
-      text-align: center;
-    }
-    .timeline-list {
-      position: relative;
-      padding-left: 2rem;
-      border-left: 2px solid #2d3748;
-    }
-    .timeline-item {
-      margin-bottom: 1.5rem;
-      position: relative;
-    }
-    .timeline-item::before {
-      content: '';
-      position: absolute;
-      left: -2.4rem;
-      top: 0.35rem;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: #60a5fa;
-    }
-    .timeline-item .year {
-      font-size: 0.8rem;
-      color: #a78bfa;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-    .timeline-item p {
-      color: #cbd5e1;
-      font-size: 0.95rem;
-      margin-top: 0.2rem;
-    }
-    footer {
-      text-align: center;
-      padding: 2rem;
-      color: #4a5568;
-      font-size: 0.85rem;
-      border-top: 1px solid #2d3748;
-      margin-top: 3rem;
+    .future-card:hover { transform: translateY(-4px); border-color: var(--accent2); }
+    .future-img { width: 100%; height: 160px; object-fit: cover; filter: brightness(0.7) saturate(1.3); }
+    .future-body { padding: 1.25rem; }
+    .future-body h3 { font-weight: 700; margin-bottom: 0.5rem; }
+    .future-body p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+
+    /* GLOSSARY */
+    .glossary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; }
+    .glos-item { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem; }
+    .glos-term { font-weight: 700; color: #60a5fa; margin-bottom: 0.4rem; font-size: 0.95rem; }
+    .glos-def { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
+    /* FOOTER */
+    footer { background: var(--surface); border-top: 1px solid var(--border); padding: 3rem 2rem; text-align: center; }
+    footer p { color: var(--muted); font-size: 0.85rem; }
+    .footer-logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 800; background: linear-gradient(90deg, #3b82f6, #8b5cf6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 0.75rem; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: linear-gradient(to right, transparent, var(--border), transparent); margin: 0 2rem; }
+
+    @media(max-width: 600px) {
+      .nav-links { display: none; }
+      .hero-stats { gap: 1.5rem; }
     }
   </style>
 </head>
 <body>
 
-<header>
-  <h1>&#128187; Computers</h1>
-  <p>A guide to how computers work, their history, and key components</p>
-</header>
+<nav>
+  <div class="nav-logo">⚡ ComputerInfo</div>
+  <ul class="nav-links">
+    <li><a href="#components">Components</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#types">Types</a></li>
+    <li><a href="#history">History</a></li>
+    <li><a href="#future">Future</a></li>
+  </ul>
+</nav>
 
-<main>
-  <div class="grid">
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">The Complete Guide</div>
+    <h1>Everything About Computers</h1>
+    <p>From transistors to quantum processors — explore the technology that powers the modern world.</p>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">80+</div><div class="stat-label">Years of history</div></div>
+      <div class="stat"><div class="stat-num">10¹²</div><div class="stat-label">Transistors per chip</div></div>
+      <div class="stat"><div class="stat-num">5GHz+</div><div class="stat-label">Modern CPU speeds</div></div>
+      <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Possibilities</div></div>
+    </div>
+  </div>
+  <div class="scroll-hint">↓ Scroll to explore</div>
+</div>
 
-    <div class="card">
-      <div class="card-icon">&#129704;</div>
-      <h2>What is a Computer?</h2>
-      <p>A computer is an electronic device that processes data according to a set of instructions (programs). It can perform arithmetic, logic, input/output, and storage operations at extremely high speed.</p>
+<div class="divider"></div>
+
+<!-- COMPONENTS -->
+<section id="components">
+  <div class="section-label">Hardware</div>
+  <h2 class="section-title">Core Components</h2>
+  <p class="section-sub">Every computer is built from specialized hardware components, each performing a critical role in the system.</p>
+  <div class="components-grid">
+
+    <div class="comp-card">
+      <img class="comp-img" src="https://images.unsplash.com/photo-1591799264318-7e6ef8ddb7ea?w=600&q=80" alt="CPU"/>
+      <div class="comp-body">
+        <div class="comp-tag">Processing</div>
+        <h3>CPU — Central Processing Unit</h3>
+        <p>The brain of the computer. Executes billions of instructions per second using billions of transistors etched onto silicon. Modern CPUs feature multiple cores, hyper-threading, and branch prediction to maximize throughput.</p>
+        <div class="comp-specs">
+          <span class="spec-pill">Intel Core i9</span><span class="spec-pill">AMD Ryzen 9</span><span class="spec-pill">Apple M4</span><span class="spec-pill">Up to 5.6 GHz</span><span class="spec-pill">3nm process</span>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-icon">&#9881;&#65039;</div>
-      <h2>CPU — The Brain</h2>
-      <p>The Central Processing Unit executes instructions. Modern CPUs have multiple cores allowing parallel processing.</p>
-      <ul>
-        <li>Clock Speed <span>GHz</span></li>
-        <li>Cores <span>2 – 192+</span></li>
-        <li>Cache <span>L1 / L2 / L3</span></li>
-        <li>Top Makers <span>Intel, AMD, Apple</span></li>
-      </ul>
+    <div class="comp-card">
+      <img class="comp-img" src="https://images.unsplash.com/photo-1562976540-1502c2145186?w=600&q=80" alt="RAM"/>
+      <div class="comp-body">
+        <div class="comp-tag">Memory</div>
+        <h3>RAM — Random Access Memory</h3>
+        <p>Ultra-fast temporary storage that holds running programs and active data. The CPU can read and write RAM millions of times faster than storage drives. Volatile — data is lost when power is removed.</p>
+        <div class="comp-specs">
+          <span class="spec-pill">DDR5</span><span class="spec-pill">LPDDR5X</span><span class="spec-pill">Up to 128 GB</span><span class="spec-pill">6400 MT/s</span>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-icon">&#128190;</div>
-      <h2>RAM — Memory</h2>
-      <p>Random Access Memory is fast, temporary storage used while programs run. More RAM means more applications can run simultaneously without slowdowns.</p>
-      <ul>
-        <li>Types <span>DDR4, DDR5, LPDDR5</span></li>
-        <li>Typical Range <span>8 GB – 128 GB</span></li>
-        <li>Speed <span>3200 – 6400 MT/s</span></li>
-      </ul>
+    <div class="comp-card">
+      <img class="comp-img" src="https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?w=600&q=80" alt="GPU"/>
+      <div class="comp-body">
+        <div class="comp-tag">Graphics & Compute</div>
+        <h3>GPU — Graphics Processing Unit</h3>
+        <p>Originally designed to render pixels, GPUs now power AI, scientific simulations, and crypto mining. With thousands of small cores running in parallel, a modern GPU performs more raw FLOPs than any CPU.</p>
+        <div class="comp-specs">
+          <span class="spec-pill">Nvidia RTX 5090</span><span class="spec-pill">AMD RX 9070</span><span class="spec-pill">32 GB VRAM</span><span class="spec-pill">CUDA / ROCm</span>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-icon">&#128225;</div>
-      <h2>Storage</h2>
-      <p>Persistent storage keeps data when power is off. SSDs have largely replaced HDDs for speed, while HDDs remain for bulk storage.</p>
-      <ul>
-        <li>HDD <span>Magnetic, slow, cheap</span></li>
-        <li>SSD <span>Flash, fast, common</span></li>
-        <li>NVMe <span>PCIe, very fast</span></li>
-        <li>Interface <span>SATA / PCIe / USB</span></li>
-      </ul>
+    <div class="comp-card">
+      <img class="comp-img" src="https://images.unsplash.com/photo-1531492746076-161ca9bcad58?w=600&q=80" alt="Storage"/>
+      <div class="comp-body">
+        <div class="comp-tag">Storage</div>
+        <h3>SSD / NVMe Storage</h3>
+        <p>Solid-state drives store data permanently using NAND flash chips with no moving parts. NVMe drives connect directly to the PCIe bus, delivering sequential reads up to 14,000 MB/s — 30× faster than traditional HDDs.</p>
+        <div class="comp-specs">
+          <span class="spec-pill">NVMe PCIe 5.0</span><span class="spec-pill">Up to 4 TB</span><span class="spec-pill">14 GB/s read</span><span class="spec-pill">3D NAND</span>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-icon">&#127918;</div>
-      <h2>GPU — Graphics</h2>
-      <p>The Graphics Processing Unit renders images and video. Modern GPUs are also used for AI, machine learning, and scientific computing due to their massively parallel architecture.</p>
-      <ul>
-        <li>Top Makers <span>Nvidia, AMD, Intel</span></li>
-        <li>VRAM <span>4 GB – 80 GB</span></li>
-        <li>Uses <span>Gaming, AI, 3D, Video</span></li>
-      </ul>
+    <div class="comp-card">
+      <img class="comp-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=80" alt="Motherboard"/>
+      <div class="comp-body">
+        <div class="comp-tag">Foundation</div>
+        <h3>Motherboard</h3>
+        <p>The central circuit board connecting all components. Houses the CPU socket, RAM slots, PCIe lanes, chipset, and I/O controllers. The chipset manages communication between the CPU and all peripherals.</p>
+        <div class="comp-specs">
+          <span class="spec-pill">ATX / mATX / ITX</span><span class="spec-pill">Z890 / X870</span><span class="spec-pill">PCIe 5.0</span><span class="spec-pill">USB4</span>
+        </div>
+      </div>
     </div>
 
-    <div class="card">
-      <div class="card-icon">&#9889;</div>
-      <h2>Motherboard & Power</h2>
-      <p>The motherboard connects all components. The PSU (Power Supply Unit) converts AC mains power to regulated DC voltages required by computer components.</p>
-      <ul>
-        <li>Form Factors <span>ATX, mATX, ITX</span></li>
-        <li>Chipsets <span>Z790, X670, B650</span></li>
-        <li>PSU Ratings <span>80+ Bronze – Titanium</span></li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">&#127760;</div>
-      <h2>Networking</h2>
-      <p>Computers connect to networks via Ethernet (wired) or Wi-Fi (wireless). Networking allows resource sharing, communication, and internet access.</p>
-      <ul>
-        <li>Ethernet <span>100 Mbps – 10 Gbps</span></li>
-        <li>Wi-Fi 6 <span>Up to 9.6 Gbps</span></li>
-        <li>Protocols <span>TCP/IP, DNS, HTTP</span></li>
-      </ul>
-    </div>
-
-    <div class="card">
-      <div class="card-icon">&#128187;</div>
-      <h2>Operating Systems</h2>
-      <p>The OS manages hardware and provides services for software. It acts as an intermediary between applications and the physical hardware.</p>
-      <ul>
-        <li>Windows <span>Most popular desktop</span></li>
-        <li>Linux <span>Servers & power users</span></li>
-        <li>macOS <span>Apple hardware</span></li>
-        <li>Android / iOS <span>Mobile</span></li>
-      </ul>
+    <div class="comp-card">
+      <img class="comp-img" src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=600&q=80" alt="Networking"/>
+      <div class="comp-body">
+        <div class="comp-tag">Connectivity</div>
+        <h3>Networking</h3>
+        <p>Network adapters connect computers to LANs and the internet. Modern NICs support 2.5G / 10G Ethernet and Wi-Fi 7. Protocols like TCP/IP, DNS, and HTTPS govern how data is packaged, addressed, and secured in transit.</p>
+        <div class="comp-specs">
+          <span class="spec-pill">Wi-Fi 7</span><span class="spec-pill">10G Ethernet</span><span class="spec-pill">TCP/IP</span><span class="spec-pill">Bluetooth 5.4</span>
+        </div>
+      </div>
     </div>
 
   </div>
+</section>
 
-  <div class="timeline">
-    <h2>A Brief History of Computers</h2>
-    <div class="timeline-list">
-      <div class="timeline-item">
-        <div class="year">1945</div>
-        <p>ENIAC — first general-purpose electronic computer, weighed 30 tons and filled an entire room.</p>
+<div class="divider"></div>
+
+<!-- HOW IT WORKS -->
+<section id="how">
+  <div class="how-grid">
+    <div>
+      <div class="section-label">Under the Hood</div>
+      <h2 class="section-title">How a Computer Works</h2>
+      <p class="section-sub">Every computation follows the same fundamental cycle, billions of times per second.</p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <h4>Fetch</h4>
+            <p>The CPU fetches the next instruction from RAM using the program counter register to track the current position.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <h4>Decode</h4>
+            <p>The instruction is decoded by the control unit to determine what operation needs to be performed and which operands to use.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <h4>Execute</h4>
+            <p>The ALU (Arithmetic Logic Unit) performs the operation — addition, comparison, bitwise logic, memory read/write.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <h4>Write Back</h4>
+            <p>The result is stored back to a register or RAM. The program counter advances and the cycle repeats.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-content">
+            <h4>Cache & Pipeline</h4>
+            <p>Modern CPUs run multiple instructions simultaneously via pipelining and store frequently used data in L1/L2/L3 cache for nanosecond access.</p>
+          </div>
+        </div>
       </div>
-      <div class="timeline-item">
-        <div class="year">1958</div>
-        <p>Invention of the integrated circuit (microchip) by Jack Kilby and Robert Noyce.</p>
+    </div>
+    <div class="how-img-wrap">
+      <div class="how-img-glow"></div>
+      <img class="how-img" src="https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=700&q=80" alt="Circuit board closeup"/>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TYPES OF COMPUTERS -->
+<section id="types">
+  <div class="section-label">Categories</div>
+  <h2 class="section-title">Types of Computers</h2>
+  <p class="section-sub">Computers come in many forms, each optimized for different use cases and environments.</p>
+  <div class="types-grid">
+    <div class="type-card">
+      <img src="https://images.unsplash.com/photo-1593640408182-31c228b42826?w=400&q=80" alt="Desktop"/>
+      <div class="type-overlay"></div>
+      <div class="type-text"><h3>Desktop PC</h3><p>Upgradeable, powerful, and cost-effective. The workhorse for gaming, content creation, and productivity.</p></div>
+    </div>
+    <div class="type-card">
+      <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80" alt="Laptop"/>
+      <div class="type-overlay"></div>
+      <div class="type-text"><h3>Laptop</h3><p>Portable all-in-one. Balances performance with battery life using low-power CPUs and integrated cooling.</p></div>
+    </div>
+    <div class="type-card">
+      <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=400&q=80" alt="Server"/>
+      <div class="type-overlay"></div>
+      <div class="type-text"><h3>Server</h3><p>Designed for 24/7 uptime, high I/O throughput, and multi-socket CPU configurations with ECC RAM.</p></div>
+    </div>
+    <div class="type-card">
+      <img src="https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=400&q=80" alt="Smartphone"/>
+      <div class="type-overlay"></div>
+      <div class="type-text"><h3>Smartphone</h3><p>A full computer in your pocket. Modern SoCs integrate CPU, GPU, NPU, modem, and RAM on one chip.</p></div>
+    </div>
+    <div class="type-card">
+      <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=400&q=80" alt="Embedded"/>
+      <div class="type-overlay"></div>
+      <div class="type-text"><h3>Embedded</h3><p>Computers inside other devices — cars, TVs, medical equipment, industrial controllers, and IoT sensors.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PERFORMANCE BENCHMARKS -->
+<section id="benchmarks">
+  <div class="section-label">Performance</div>
+  <h2 class="section-title">Performance by Generation</h2>
+  <p class="section-sub">Relative performance improvements across CPU, GPU, and storage over the past decade.</p>
+  <div class="bench-grid">
+    <div class="bench-card">
+      <h3>CPU Single-Core Performance</h3>
+      <div class="bar-item"><div class="bar-label">Intel Core i9-14900K<span>100%</span></div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">Apple M4 Pro<span>98%</span></div><div class="bar-bg"><div class="bar-fill" style="width:98%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">AMD Ryzen 9 7950X<span>94%</span></div><div class="bar-bg"><div class="bar-fill" style="width:94%;background:linear-gradient(90deg,#ef4444,#f87171)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">Intel Core i7 (2015)<span>42%</span></div><div class="bar-bg"><div class="bar-fill" style="width:42%;background:linear-gradient(90deg,#64748b,#94a3b8)"></div></div></div>
+    </div>
+    <div class="bench-card">
+      <h3>Storage Read Speed</h3>
+      <div class="bar-item"><div class="bar-label">NVMe PCIe 5.0<span>14 GB/s</span></div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">NVMe PCIe 4.0<span>7 GB/s</span></div><div class="bar-bg"><div class="bar-fill" style="width:50%;background:linear-gradient(90deg,#8b5cf6,#a78bfa)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">NVMe PCIe 3.0<span>3.5 GB/s</span></div><div class="bar-bg"><div class="bar-fill" style="width:25%;background:linear-gradient(90deg,#06b6d4,#67e8f9)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">HDD 7200 RPM<span>0.15 GB/s</span></div><div class="bar-bg"><div class="bar-fill" style="width:1%;background:linear-gradient(90deg,#64748b,#94a3b8)"></div></div></div>
+    </div>
+    <div class="bench-card">
+      <h3>GPU AI Performance (TFLOPS)</h3>
+      <div class="bar-item"><div class="bar-label">Nvidia H100<span>3958 TF</span></div><div class="bar-bg"><div class="bar-fill" style="width:100%;background:linear-gradient(90deg,#10b981,#34d399)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">Nvidia RTX 5090<span>1790 TF</span></div><div class="bar-bg"><div class="bar-fill" style="width:45%;background:linear-gradient(90deg,#3b82f6,#60a5fa)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">AMD RX 9070 XT<span>870 TF</span></div><div class="bar-bg"><div class="bar-fill" style="width:22%;background:linear-gradient(90deg,#ef4444,#f87171)"></div></div></div>
+      <div class="bar-item"><div class="bar-label">RTX 3090 (2020)<span>285 TF</span></div><div class="bar-bg"><div class="bar-fill" style="width:7%;background:linear-gradient(90deg,#64748b,#94a3b8)"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HISTORY -->
+<section id="history">
+  <div class="section-label">Timeline</div>
+  <h2 class="section-title">History of Computing</h2>
+  <p class="section-sub">From room-sized machines to devices smaller than a fingernail — 80 years of relentless innovation.</p>
+  <div class="timeline-wrap">
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">1945</div>
+      <div class="t-title">ENIAC — The First General-Purpose Computer</div>
+      <div class="t-desc">Weighed 30 tons, consumed 150 kW of power, and filled a 1,800 sq ft room. Contained 18,000 vacuum tubes and could perform 5,000 additions per second. Programmed by physically rewiring patch cables.</div>
+      <img class="t-img" src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=600&q=80" alt="Early computing"/>
+    </div>
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">1958</div>
+      <div class="t-title">The Integrated Circuit</div>
+      <div class="t-desc">Jack Kilby (Texas Instruments) and Robert Noyce (Fairchild) independently invented the IC, shrinking entire circuits onto a single chip. This invention triggered Moore's Law and the modern semiconductor industry.</div>
+    </div>
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">1971</div>
+      <div class="t-title">Intel 4004 — The First Microprocessor</div>
+      <div class="t-desc">A complete CPU on a single chip, running at 740 kHz with 2,300 transistors. Today's CPUs contain over 100 billion transistors — 43 million times more — and run 7,000× faster.</div>
+    </div>
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">1984</div>
+      <div class="t-title">Apple Macintosh — The GUI Revolution</div>
+      <div class="t-desc">The first mass-market computer with a graphical user interface and mouse. Made computing accessible to non-engineers and defined the personal computer paradigm for decades.</div>
+    </div>
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">1991</div>
+      <div class="t-title">Linux & the World Wide Web</div>
+      <div class="t-desc">Linus Torvalds released Linux 0.01. Tim Berners-Lee launched the World Wide Web. Two events that would reshape global computing infrastructure — Linux now runs 97% of the world's servers.</div>
+    </div>
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">2007</div>
+      <div class="t-title">iPhone — The Smartphone Era</div>
+      <div class="t-desc">Apple's iPhone combined a phone, internet browser, and touchscreen computer. Today over 6 billion people carry a computer more powerful than the machines that sent astronauts to the Moon.</div>
+    </div>
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">2020</div>
+      <div class="t-title">Apple M1 — ARM Conquers the Desktop</div>
+      <div class="t-desc">Apple's custom ARM chip shattered x86 performance-per-watt benchmarks, proving that RISC architecture could dominate desktop computing and pushing Intel and AMD to dramatically accelerate their roadmaps.</div>
+    </div>
+    <div class="t-item">
+      <div class="t-dot"></div>
+      <div class="t-year">2022–Now</div>
+      <div class="t-title">The AI Computing Revolution</div>
+      <div class="t-desc">Large language models and diffusion models drove an unprecedented demand for GPU compute. Nvidia's H100 became the most sought-after chip in history. AI accelerators are now standard in phones, laptops, and data centers.</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FUTURE -->
+<section id="future">
+  <div class="section-label">What's Next</div>
+  <h2 class="section-title">The Future of Computing</h2>
+  <p class="section-sub">The next frontiers that will redefine what computers can do.</p>
+  <div class="future-grid">
+    <div class="future-card">
+      <img class="future-img" src="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=500&q=80" alt="Quantum"/>
+      <div class="future-body">
+        <h3>⚛️ Quantum Computing</h3>
+        <p>Quantum computers use qubits that exist in superposition, enabling them to solve certain problems exponentially faster than classical computers. IBM, Google, and startups race toward fault-tolerant quantum advantage.</p>
       </div>
-      <div class="timeline-item">
-        <div class="year">1971</div>
-        <p>Intel releases the 4004 — the first commercially available microprocessor.</p>
+    </div>
+    <div class="future-card">
+      <img class="future-img" src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=500&q=80" alt="AI chips"/>
+      <div class="future-body">
+        <h3>🧠 Neuromorphic Chips</h3>
+        <p>Brain-inspired chips like Intel's Loihi process information using spiking neural networks — consuming 1000× less power than conventional AI accelerators for inference tasks.</p>
       </div>
-      <div class="timeline-item">
-        <div class="year">1981</div>
-        <p>IBM launches the IBM PC, establishing the x86 architecture that dominates to this day.</p>
+    </div>
+    <div class="future-card">
+      <img class="future-img" src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=500&q=80" alt="3D chips"/>
+      <div class="future-body">
+        <h3>📦 3D Chip Stacking</h3>
+        <p>Instead of shrinking transistors further, manufacturers are stacking chips vertically. AMD's 3D V-Cache and HBM memory dramatically reduce latency by placing memory directly on top of the processor die.</p>
       </div>
-      <div class="timeline-item">
-        <div class="year">1991</div>
-        <p>Linux kernel created by Linus Torvalds. The World Wide Web goes public.</p>
+    </div>
+    <div class="future-card">
+      <img class="future-img" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&q=80" alt="Photonic"/>
+      <div class="future-body">
+        <h3>💡 Photonic Computing</h3>
+        <p>Using light instead of electricity to transmit and process data. Photonic chips could enable data center interconnects and AI inference at the speed of light with near-zero energy loss.</p>
       </div>
-      <div class="timeline-item">
-        <div class="year">2007</div>
-        <p>The iPhone launches, beginning the smartphone era and putting powerful computers in everyone's pocket.</p>
+    </div>
+    <div class="future-card">
+      <img class="future-img" src="https://images.unsplash.com/photo-1536697246787-1f7ae568d89a?w=500&q=80" alt="Edge AI"/>
+      <div class="future-body">
+        <h3>🌐 Edge & Ambient AI</h3>
+        <p>AI inference moving to the device itself — phones, cameras, sensors. No cloud latency, full privacy. Every device becomes intelligent with dedicated NPUs processing data locally in real time.</p>
       </div>
-      <div class="timeline-item">
-        <div class="year">2020s</div>
-        <p>AI accelerators and neural processing units (NPUs) become standard; quantum computing advances rapidly.</p>
+    </div>
+    <div class="future-card">
+      <img class="future-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80" alt="BCI"/>
+      <div class="future-body">
+        <h3>🔗 Brain-Computer Interfaces</h3>
+        <p>Companies like Neuralink are developing implantable chips that read neural signals directly from the brain, allowing humans to control computers with thought — and potentially restoring lost motor function.</p>
       </div>
     </div>
   </div>
+</section>
 
-</main>
+<div class="divider"></div>
+
+<!-- GLOSSARY -->
+<section id="glossary">
+  <div class="section-label">Reference</div>
+  <h2 class="section-title">Key Terms Glossary</h2>
+  <p class="section-sub">Essential vocabulary for understanding computer hardware and software.</p>
+  <div class="glossary-grid">
+    <div class="glos-item"><div class="glos-term">Transistor</div><div class="glos-def">A microscopic switch that forms the basic building block of all digital chips. Modern CPUs contain over 100 billion transistors.</div></div>
+    <div class="glos-item"><div class="glos-term">Clock Speed (GHz)</div><div class="glos-def">The number of cycles a CPU executes per second. 5 GHz = 5 billion cycles per second. Higher frequency = more instructions per second.</div></div>
+    <div class="glos-item"><div class="glos-term">TDP (Thermal Design Power)</div><div class="glos-def">The maximum heat a cooling solution must dissipate. A 125W TDP CPU requires a cooler rated for at least 125W.</div></div>
+    <div class="glos-item"><div class="glos-term">Latency</div><div class="glos-def">The delay before data transfer begins. L1 cache: ~1ns. RAM: ~100ns. SSD: ~100μs. HDD: ~10ms. Network: ~1-100ms.</div></div>
+    <div class="glos-item"><div class="glos-term">Throughput</div><div class="glos-def">The amount of data processed per unit of time. Measured in GB/s for storage, Gbps for networks, TFLOPS for GPUs.</div></div>
+    <div class="glos-item"><div class="glos-term">BIOS / UEFI</div><div class="glos-def">Firmware stored on the motherboard that initializes hardware during boot and hands control to the operating system.</div></div>
+    <div class="glos-item"><div class="glos-term">Virtualization</div><div class="glos-def">Running multiple operating systems simultaneously on one machine using a hypervisor (e.g. Proxmox, VMware, Hyper-V).</div></div>
+    <div class="glos-item"><div class="glos-term">Process Node (nm)</div><div class="glos-def">The size of transistors on a chip. Smaller = more transistors, less power, better performance. Current leaders: 2–3nm.</div></div>
+    <div class="glos-item"><div class="glos-term">PCIe</div><div class="glos-def">Peripheral Component Interconnect Express — high-speed bus connecting GPUs, NVMe drives, and NICs to the CPU. PCIe 5.0 = 32 GT/s per lane.</div></div>
+  </div>
+</section>
 
 <footer>
-  &copy; 2026 Computer Info &mdash; Hosted on Ubuntu 24.04 LXC &bull; Proxmox VE
+  <div class="footer-logo">⚡ ComputerInfo</div>
+  <p>Hosted on Ubuntu 24.04 LXC &bull; Proxmox VE &bull; Cloudflare Tunnel</p>
+  <p style="margin-top:0.5rem">infocomputer.cogashi.com</p>
 </footer>
 
 </body>
