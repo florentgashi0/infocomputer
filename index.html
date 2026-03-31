@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Computer Info</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #0f1117;
+      color: #e2e8f0;
+      min-height: 100vh;
+    }
+    header {
+      background: linear-gradient(135deg, #1a1f2e 0%, #16213e 100%);
+      border-bottom: 1px solid #2d3748;
+      padding: 3rem 2rem;
+      text-align: center;
+    }
+    header h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    header p {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+    main {
+      max-width: 1100px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: #1a1f2e;
+      border: 1px solid #2d3748;
+      border-radius: 12px;
+      padding: 1.75rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: #60a5fa;
+    }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+    .card h2 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #60a5fa;
+      margin-bottom: 0.75rem;
+    }
+    .card p {
+      color: #94a3b8;
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+    .card ul {
+      list-style: none;
+      margin-top: 0.75rem;
+    }
+    .card ul li {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      padding: 0.3rem 0;
+      border-bottom: 1px solid #2d3748;
+      display: flex;
+      justify-content: space-between;
+    }
+    .card ul li:last-child { border-bottom: none; }
+    .card ul li span { color: #e2e8f0; font-weight: 600; }
+    .timeline {
+      margin-top: 3rem;
+    }
+    .timeline h2 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    .timeline-list {
+      position: relative;
+      padding-left: 2rem;
+      border-left: 2px solid #2d3748;
+    }
+    .timeline-item {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.4rem;
+      top: 0.35rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #60a5fa;
+    }
+    .timeline-item .year {
+      font-size: 0.8rem;
+      color: #a78bfa;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .timeline-item p {
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      margin-top: 0.2rem;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #4a5568;
+      font-size: 0.85rem;
+      border-top: 1px solid #2d3748;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>&#128187; Computers</h1>
+  <p>A guide to how computers work, their history, and key components</p>
+</header>
+
+<main>
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-icon">&#129704;</div>
+      <h2>What is a Computer?</h2>
+      <p>A computer is an electronic device that processes data according to a set of instructions (programs). It can perform arithmetic, logic, input/output, and storage operations at extremely high speed.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#9881;&#65039;</div>
+      <h2>CPU — The Brain</h2>
+      <p>The Central Processing Unit executes instructions. Modern CPUs have multiple cores allowing parallel processing.</p>
+      <ul>
+        <li>Clock Speed <span>GHz</span></li>
+        <li>Cores <span>2 – 192+</span></li>
+        <li>Cache <span>L1 / L2 / L3</span></li>
+        <li>Top Makers <span>Intel, AMD, Apple</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#128190;</div>
+      <h2>RAM — Memory</h2>
+      <p>Random Access Memory is fast, temporary storage used while programs run. More RAM means more applications can run simultaneously without slowdowns.</p>
+      <ul>
+        <li>Types <span>DDR4, DDR5, LPDDR5</span></li>
+        <li>Typical Range <span>8 GB – 128 GB</span></li>
+        <li>Speed <span>3200 – 6400 MT/s</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#128225;</div>
+      <h2>Storage</h2>
+      <p>Persistent storage keeps data when power is off. SSDs have largely replaced HDDs for speed, while HDDs remain for bulk storage.</p>
+      <ul>
+        <li>HDD <span>Magnetic, slow, cheap</span></li>
+        <li>SSD <span>Flash, fast, common</span></li>
+        <li>NVMe <span>PCIe, very fast</span></li>
+        <li>Interface <span>SATA / PCIe / USB</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#127918;</div>
+      <h2>GPU — Graphics</h2>
+      <p>The Graphics Processing Unit renders images and video. Modern GPUs are also used for AI, machine learning, and scientific computing due to their massively parallel architecture.</p>
+      <ul>
+        <li>Top Makers <span>Nvidia, AMD, Intel</span></li>
+        <li>VRAM <span>4 GB – 80 GB</span></li>
+        <li>Uses <span>Gaming, AI, 3D, Video</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#9889;</div>
+      <h2>Motherboard & Power</h2>
+      <p>The motherboard connects all components. The PSU (Power Supply Unit) converts AC mains power to regulated DC voltages required by computer components.</p>
+      <ul>
+        <li>Form Factors <span>ATX, mATX, ITX</span></li>
+        <li>Chipsets <span>Z790, X670, B650</span></li>
+        <li>PSU Ratings <span>80+ Bronze – Titanium</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#127760;</div>
+      <h2>Networking</h2>
+      <p>Computers connect to networks via Ethernet (wired) or Wi-Fi (wireless). Networking allows resource sharing, communication, and internet access.</p>
+      <ul>
+        <li>Ethernet <span>100 Mbps – 10 Gbps</span></li>
+        <li>Wi-Fi 6 <span>Up to 9.6 Gbps</span></li>
+        <li>Protocols <span>TCP/IP, DNS, HTTP</span></li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">&#128187;</div>
+      <h2>Operating Systems</h2>
+      <p>The OS manages hardware and provides services for software. It acts as an intermediary between applications and the physical hardware.</p>
+      <ul>
+        <li>Windows <span>Most popular desktop</span></li>
+        <li>Linux <span>Servers & power users</span></li>
+        <li>macOS <span>Apple hardware</span></li>
+        <li>Android / iOS <span>Mobile</span></li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="timeline">
+    <h2>A Brief History of Computers</h2>
+    <div class="timeline-list">
+      <div class="timeline-item">
+        <div class="year">1945</div>
+        <p>ENIAC — first general-purpose electronic computer, weighed 30 tons and filled an entire room.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">1958</div>
+        <p>Invention of the integrated circuit (microchip) by Jack Kilby and Robert Noyce.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">1971</div>
+        <p>Intel releases the 4004 — the first commercially available microprocessor.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">1981</div>
+        <p>IBM launches the IBM PC, establishing the x86 architecture that dominates to this day.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">1991</div>
+        <p>Linux kernel created by Linus Torvalds. The World Wide Web goes public.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2007</div>
+        <p>The iPhone launches, beginning the smartphone era and putting powerful computers in everyone's pocket.</p>
+      </div>
+      <div class="timeline-item">
+        <div class="year">2020s</div>
+        <p>AI accelerators and neural processing units (NPUs) become standard; quantum computing advances rapidly.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  &copy; 2026 Computer Info &mdash; Hosted on Ubuntu 24.04 LXC &bull; Proxmox VE
+</footer>
+
+</body>
+</html>
